@@ -19,6 +19,12 @@ class Graph{
     
     func AddEdge(edge: Edge){
         edges.append(edge)
+        if !vertices.contains(edge.vertices[0]){
+            AddVertex(edge.vertices[0])
+        }
+        if !vertices.contains(edge.vertices[1]){
+            AddVertex(edge.vertices[1])
+        }
     }
     
     func AddVertex(vertex: Int){
@@ -29,14 +35,19 @@ class Graph{
         edges.sortInPlace({$0.weight < $1.weight})
     }
     
-    func SetGraph(inputMatrix: [[Int]]){
+    func SetGraphFromMatrix(inputMatrix: [[Int]]){
         for i in 0...inputMatrix.count-1 {
-            AddVertex(i+1)                      // ADD VERTICES TO THE GRAPH
             for j in i...inputMatrix.count-1 {
                 if inputMatrix[i][j] != 0 {     // ADD EDGES TO THE GRAPH
                     AddEdge(Edge(weight: inputMatrix[i][j], vertex1: i+1, vertex2: j+1))
                 }
             }
+        }
+    }
+    
+    func SetGraph(inputMatrix: [[Int]]){
+        for i in 0...inputMatrix[0].count-1{
+            AddEdge(Edge(weight: inputMatrix[2][i], vertex1: inputMatrix[0][i], vertex2: inputMatrix[1][i]))
         }
     }
     
@@ -85,9 +96,25 @@ class Graph{
         return matrix
     }
     
-    func Print(){
+    func ConvertToList() -> [[Int]]{
+        var list: [[Int]] = [[],[],[]]
+        for edge in edges{
+            list[0].append(edge.vertices[0])
+            list[1].append(edge.vertices[1])
+            list[2].append(edge.weight)
+        }
+        return list
+    }
+    
+    func PrintMatrix(){
         for i in vertices{
             print(ConvertToMatrix()[i-1])
+        }
+    }
+    
+    func PrintList(){
+        for i in 0...2{
+            print(ConvertToList()[i])
         }
     }
 }
